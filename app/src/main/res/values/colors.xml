@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#e040fb</color>
+    <color name="colorPrimaryDark">#ab47bc</color>
+    <color name="colorAccent">#ff5252</color>
+
+    <color name="colorDrink">#ffb300</color>
+    <color name="colorEat">#69f0ae</color>
+    <color name="colorEatAndDrink">#536dfe</color>
 </resources>

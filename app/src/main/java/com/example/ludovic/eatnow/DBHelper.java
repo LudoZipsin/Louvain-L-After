@@ -8,6 +8,8 @@ package com.example.ludovic.eatnow;
 
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -29,8 +31,22 @@ public class DBHelper extends SQLiteOpenHelper {
     protected static final String COLUMN_DESCRIPTION = "desc";
     protected static final String COLUMN_EAT = "eat";
     protected static final String COLUMN_DRINK = "drink";
-    protected static final String COLUMN_OPEN_AT = "open";
-    protected static final String COLUMN_CLOSE_AT = "close";
+
+    protected static final String COLUMN_MONDAY_OPEN_AT = "openmonday";
+    protected static final String COLUMN_TUESDAY_OPEN_AT = "opentuesday";
+    protected static final String COLUMN_WEDNESDAY_OPEN_AT = "openwednesday";
+    protected static final String COLUMN_THURSDAY_OPEN_AT = "openthursday";
+    protected static final String COLUMN_FRIDAY_OPEN_AT = "openfriday";
+    protected static final String COLUMN_SATURDAY_OPEN_AT = "opensaturday";
+    protected static final String COLUMN_SUNDAY_OPEN_AT = "opensunday";
+
+    protected static final String COLUMN_MONDAY_CLOSE_AT = "closemonday";
+    protected static final String COLUMN_TUESDAY_CLOSE_AT = "closetuesday";
+    protected static final String COLUMN_WEDNESDAY_CLOSE_AT = "closewednesday";
+    protected static final String COLUMN_THURSDAY_CLOSE_AT = "closethursday";
+    protected static final String COLUMN_FRIDAY_CLOSE_AT = "closefriday";
+    protected static final String COLUMN_SATURDAY_CLOSE_AT = "closesaturday";
+    protected static final String COLUMN_SUNDAY_CLOSE_AT = "closesunday";
 
     private static final int YES = 1;
     //private static final int NO = 0;
@@ -55,8 +71,20 @@ public class DBHelper extends SQLiteOpenHelper {
                     COLUMN_DESCRIPTION  + " TEXT " +
                     COLUMN_EAT  + " INTEGER " +
                     COLUMN_DRINK  + " INTEGER " +
-                    COLUMN_OPEN_AT  + " INTEGER " +
-                    COLUMN_CLOSE_AT  + " INTEGER " +
+                    COLUMN_MONDAY_OPEN_AT + " INTEGER" +
+                    COLUMN_TUESDAY_OPEN_AT + " INTEGER" +
+                    COLUMN_WEDNESDAY_OPEN_AT + " INTEGER" +
+                    COLUMN_THURSDAY_OPEN_AT + " INTEGER" +
+                    COLUMN_FRIDAY_OPEN_AT + " INTEGER" +
+                    COLUMN_SATURDAY_OPEN_AT + " INTEGER" +
+                    COLUMN_SUNDAY_OPEN_AT + " INTEGER" +
+                    COLUMN_MONDAY_CLOSE_AT + " INTEGER" +
+                    COLUMN_TUESDAY_CLOSE_AT + " INTEGER" +
+                    COLUMN_WEDNESDAY_CLOSE_AT + " INTEGER" +
+                    COLUMN_THURSDAY_CLOSE_AT + " INTEGER" +
+                    COLUMN_FRIDAY_CLOSE_AT + " INTEGER" +
+                    COLUMN_SATURDAY_CLOSE_AT + " INTEGER" +
+                    COLUMN_SUNDAY_CLOSE_AT + " INTEGER" +
                     ")"
         );
     }
@@ -76,8 +104,20 @@ public class DBHelper extends SQLiteOpenHelper {
                                  String desc,
                                  int eat_state,
                                  int drink_state,
-                                 int open,
-                                 int close)
+                                 int openmonday,
+                                 int opentuesday,
+                                 int openwednesday,
+                                 int openthursday,
+                                 int openfriday,
+                                 int opensaturday,
+                                 int opensunday,
+                                 int closemonday,
+                                 int closetuesday,
+                                 int closewednesday,
+                                 int closethursday,
+                                 int closefriday,
+                                 int closesaturday,
+                                 int closesunday)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -90,8 +130,21 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DESCRIPTION, desc);
         contentValues.put(COLUMN_EAT, eat_state);
         contentValues.put(COLUMN_DRINK, drink_state);
-        contentValues.put(COLUMN_OPEN_AT, open);
-        contentValues.put(COLUMN_CLOSE_AT, close);
+        contentValues.put(COLUMN_MONDAY_OPEN_AT, openmonday);
+        contentValues.put(COLUMN_TUESDAY_OPEN_AT, opentuesday);
+        contentValues.put(COLUMN_WEDNESDAY_OPEN_AT, openwednesday);
+        contentValues.put(COLUMN_THURSDAY_OPEN_AT, openthursday);
+        contentValues.put(COLUMN_FRIDAY_OPEN_AT, openfriday);
+        contentValues.put(COLUMN_SATURDAY_OPEN_AT, opensaturday);
+        contentValues.put(COLUMN_SUNDAY_OPEN_AT, opensunday);
+        contentValues.put(COLUMN_MONDAY_CLOSE_AT, closemonday);
+        contentValues.put(COLUMN_TUESDAY_CLOSE_AT, closetuesday);
+        contentValues.put(COLUMN_WEDNESDAY_CLOSE_AT, closewednesday);
+        contentValues.put(COLUMN_THURSDAY_CLOSE_AT, closethursday);
+        contentValues.put(COLUMN_FRIDAY_CLOSE_AT, closefriday);
+        contentValues.put(COLUMN_SATURDAY_CLOSE_AT, closesaturday);
+        contentValues.put(COLUMN_SUNDAY_CLOSE_AT, closesunday);
+
         db.insert(TABLE_NAME, null, contentValues);
         return true;
     }
@@ -118,8 +171,20 @@ public class DBHelper extends SQLiteOpenHelper {
                 res.getString(res.getColumnIndex(COLUMN_DESCRIPTION)),
                 res.getInt(res.getColumnIndex(COLUMN_EAT)),
                 res.getInt(res.getColumnIndex(COLUMN_DRINK)),
-                res.getInt(res.getColumnIndex(COLUMN_OPEN_AT)),
-                res.getInt(res.getColumnIndex(COLUMN_CLOSE_AT))
+                res.getInt(res.getColumnIndex(COLUMN_MONDAY_OPEN_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_TUESDAY_OPEN_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_OPEN_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_THURSDAY_OPEN_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_FRIDAY_OPEN_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_SATURDAY_OPEN_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_SUNDAY_OPEN_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_MONDAY_CLOSE_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_TUESDAY_CLOSE_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_CLOSE_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_THURSDAY_CLOSE_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_FRIDAY_CLOSE_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_SATURDAY_CLOSE_AT)),
+                res.getInt(res.getColumnIndex(COLUMN_SUNDAY_CLOSE_AT))
         );
         res.close();
         return place;
@@ -130,24 +195,94 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param time: it is the current time (which will be given by the calling activity. Depending
      *              on the time, we will increment by 24 (in order to get the restaurants and cafés
      *              that close at 3 or 4 in the morning.
+     * @param day: String. Careful for
      * @return a cursor object
      */
-    public Cursor getPlaceCursorToEatByTime(int time){
+    public Cursor getPlaceCursorToEatByTime(int time, String day){
         SQLiteDatabase db = this.getReadableDatabase();
+        String openAt = "";
+        String closeAt = "";
+        switch (day){
+            case "Monday":
+                openAt = COLUMN_MONDAY_OPEN_AT;
+                closeAt = COLUMN_MONDAY_CLOSE_AT;
+                break;
+            case "Tuesday":
+                openAt = COLUMN_TUESDAY_OPEN_AT;
+                closeAt = COLUMN_TUESDAY_CLOSE_AT;
+                break;
+            case "Wednesday":
+                openAt = COLUMN_WEDNESDAY_OPEN_AT;
+                closeAt = COLUMN_WEDNESDAY_CLOSE_AT;
+                break;
+            case "Thursday":
+                openAt = COLUMN_THURSDAY_OPEN_AT;
+                closeAt = COLUMN_THURSDAY_CLOSE_AT;
+                break;
+            case "Friday":
+                openAt = COLUMN_FRIDAY_OPEN_AT;
+                closeAt = COLUMN_FRIDAY_CLOSE_AT;
+                break;
+            case "Saturday":
+                openAt = COLUMN_SATURDAY_OPEN_AT;
+                closeAt = COLUMN_SATURDAY_CLOSE_AT;
+                break;
+            case "Sunday":
+                openAt = COLUMN_SUNDAY_OPEN_AT;
+                closeAt = COLUMN_SUNDAY_CLOSE_AT;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid day of the week: " + day);
+        }
         return db.rawQuery("SELECT * FROM " + TABLE_NAME +
-                                    " WHERE " + COLUMN_OPEN_AT + " <= " + time +
-                                    " AND " + COLUMN_CLOSE_AT + " >= " + time +
+                                    " WHERE " + openAt + " <= " + time +
+                                    " AND " + closeAt + " >= " + time +
                                     " AND " + COLUMN_EAT + " = " + YES + "", null);
     }
 
-    public ArrayList<Place> getPlaceToEatByTime(int time){
+    public ArrayList<Place> getPlaceToEatByTime(int time, String day){
 
         ArrayList<Place> places = new ArrayList<>();
 
+        String openAt = "";
+        String closeAt = "";
+        switch (day){
+            case "Monday":
+                openAt = COLUMN_MONDAY_OPEN_AT;
+                closeAt = COLUMN_MONDAY_CLOSE_AT;
+                break;
+            case "Tuesday":
+                openAt = COLUMN_TUESDAY_OPEN_AT;
+                closeAt = COLUMN_TUESDAY_CLOSE_AT;
+                break;
+            case "Wednesday":
+                openAt = COLUMN_WEDNESDAY_OPEN_AT;
+                closeAt = COLUMN_WEDNESDAY_CLOSE_AT;
+                break;
+            case "Thursday":
+                openAt = COLUMN_THURSDAY_OPEN_AT;
+                closeAt = COLUMN_THURSDAY_CLOSE_AT;
+                break;
+            case "Friday":
+                openAt = COLUMN_FRIDAY_OPEN_AT;
+                closeAt = COLUMN_FRIDAY_CLOSE_AT;
+                break;
+            case "Saturday":
+                openAt = COLUMN_SATURDAY_OPEN_AT;
+                closeAt = COLUMN_SATURDAY_CLOSE_AT;
+                break;
+            case "Sunday":
+                openAt = COLUMN_SUNDAY_OPEN_AT;
+                closeAt = COLUMN_SUNDAY_CLOSE_AT;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid day of the week: " + day);
+        }
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME +
-                " WHERE " + COLUMN_OPEN_AT + " <= " + time +
-                " AND " + COLUMN_CLOSE_AT + " >= " + time +
+                " WHERE " + openAt + " <= " + time +
+                " AND " + closeAt + " >= " + time +
                 " AND " + COLUMN_EAT + " = " + YES + "", null);
         res.moveToFirst();
 
@@ -162,8 +297,20 @@ public class DBHelper extends SQLiteOpenHelper {
                     res.getString(res.getColumnIndex(COLUMN_DESCRIPTION)),
                     res.getInt(res.getColumnIndex(COLUMN_EAT)),
                     res.getInt(res.getColumnIndex(COLUMN_DRINK)),
-                    res.getInt(res.getColumnIndex(COLUMN_OPEN_AT)),
-                    res.getInt(res.getColumnIndex(COLUMN_CLOSE_AT))
+                    res.getInt(res.getColumnIndex(COLUMN_MONDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_TUESDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_THURSDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_FRIDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SATURDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SUNDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_MONDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_TUESDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_THURSDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_FRIDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SATURDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SUNDAY_CLOSE_AT))
             ));
             res.moveToNext();
         }
@@ -178,22 +325,91 @@ public class DBHelper extends SQLiteOpenHelper {
      *              that close at 3 or 4 in the morning.
      * @return a cursor object
      */
-    public Cursor getPlaceCursorToDrinkByTime(int time){
+    public Cursor getPlaceCursorToDrinkByTime(int time, String day){
         SQLiteDatabase db = this.getReadableDatabase();
+        String openAt = "";
+        String closeAt = "";
+        switch (day){
+            case "Monday":
+                openAt = COLUMN_MONDAY_OPEN_AT;
+                closeAt = COLUMN_MONDAY_CLOSE_AT;
+                break;
+            case "Tuesday":
+                openAt = COLUMN_TUESDAY_OPEN_AT;
+                closeAt = COLUMN_TUESDAY_CLOSE_AT;
+                break;
+            case "Wednesday":
+                openAt = COLUMN_WEDNESDAY_OPEN_AT;
+                closeAt = COLUMN_WEDNESDAY_CLOSE_AT;
+                break;
+            case "Thursday":
+                openAt = COLUMN_THURSDAY_OPEN_AT;
+                closeAt = COLUMN_THURSDAY_CLOSE_AT;
+                break;
+            case "Friday":
+                openAt = COLUMN_FRIDAY_OPEN_AT;
+                closeAt = COLUMN_FRIDAY_CLOSE_AT;
+                break;
+            case "Saturday":
+                openAt = COLUMN_SATURDAY_OPEN_AT;
+                closeAt = COLUMN_SATURDAY_CLOSE_AT;
+                break;
+            case "Sunday":
+                openAt = COLUMN_SUNDAY_OPEN_AT;
+                closeAt = COLUMN_SUNDAY_CLOSE_AT;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid day of the week: " + day);
+        }
         return db.rawQuery("SELECT * FROM " + TABLE_NAME +
-                                    " WHERE " + COLUMN_OPEN_AT + " <= " + time +
-                                    " AND " + COLUMN_CLOSE_AT + " >= " + time +
+                                    " WHERE " + openAt + " <= " + time +
+                                    " AND " + closeAt + " >= " + time +
                                     " AND " + COLUMN_DRINK + " = " + YES + "", null);
     }
 
-    public ArrayList<Place> getPlaceToDrinkByTime(int time){
+    public ArrayList<Place> getPlaceToDrinkByTime(int time, String day){
 
         ArrayList<Place> places = new ArrayList<>();
 
+        String openAt = "";
+        String closeAt = "";
+        switch (day){
+            case "Monday":
+                openAt = COLUMN_MONDAY_OPEN_AT;
+                closeAt = COLUMN_MONDAY_CLOSE_AT;
+                break;
+            case "Tuesday":
+                openAt = COLUMN_TUESDAY_OPEN_AT;
+                closeAt = COLUMN_TUESDAY_CLOSE_AT;
+                break;
+            case "Wednesday":
+                openAt = COLUMN_WEDNESDAY_OPEN_AT;
+                closeAt = COLUMN_WEDNESDAY_CLOSE_AT;
+                break;
+            case "Thursday":
+                openAt = COLUMN_THURSDAY_OPEN_AT;
+                closeAt = COLUMN_THURSDAY_CLOSE_AT;
+                break;
+            case "Friday":
+                openAt = COLUMN_FRIDAY_OPEN_AT;
+                closeAt = COLUMN_FRIDAY_CLOSE_AT;
+                break;
+            case "Saturday":
+                openAt = COLUMN_SATURDAY_OPEN_AT;
+                closeAt = COLUMN_SATURDAY_CLOSE_AT;
+                break;
+            case "Sunday":
+                openAt = COLUMN_SUNDAY_OPEN_AT;
+                closeAt = COLUMN_SUNDAY_CLOSE_AT;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid day of the week: " + day);
+        }
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME +
-                " WHERE " + COLUMN_OPEN_AT + " <= " + time +
-                " AND " + COLUMN_CLOSE_AT + " >= " + time +
+                " WHERE " + openAt + " <= " + time +
+                " AND " + closeAt + " >= " + time +
                 " AND " + COLUMN_DRINK + " = " + YES + "", null);
         res.moveToFirst();
 
@@ -208,8 +424,20 @@ public class DBHelper extends SQLiteOpenHelper {
                     res.getString(res.getColumnIndex(COLUMN_DESCRIPTION)),
                     res.getInt(res.getColumnIndex(COLUMN_EAT)),
                     res.getInt(res.getColumnIndex(COLUMN_DRINK)),
-                    res.getInt(res.getColumnIndex(COLUMN_OPEN_AT)),
-                    res.getInt(res.getColumnIndex(COLUMN_CLOSE_AT))
+                    res.getInt(res.getColumnIndex(COLUMN_MONDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_TUESDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_THURSDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_FRIDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SATURDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SUNDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_MONDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_TUESDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_THURSDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_FRIDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SATURDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SUNDAY_CLOSE_AT))
             ));
             res.moveToNext();
         }
@@ -224,23 +452,90 @@ public class DBHelper extends SQLiteOpenHelper {
      *              that close at 3 or 4 in the morning.
      * @return a cursor object
      */
-    public Cursor getPlaceCursorEatAndDrinkByTime(int time){
+    public Cursor getPlaceCursorEatAndDrinkByTime(int time, String day){
         SQLiteDatabase db = this.getReadableDatabase();
+        String openAt = "";
+        String closeAt = "";
+        switch (day){
+            case "Monday":
+                openAt = COLUMN_MONDAY_OPEN_AT;
+                closeAt = COLUMN_MONDAY_CLOSE_AT;
+                break;
+            case "Tuesday":
+                openAt = COLUMN_TUESDAY_OPEN_AT;
+                closeAt = COLUMN_TUESDAY_CLOSE_AT;
+                break;
+            case "Wednesday":
+                openAt = COLUMN_WEDNESDAY_OPEN_AT;
+                closeAt = COLUMN_WEDNESDAY_CLOSE_AT;
+                break;
+            case "Thursday":
+                openAt = COLUMN_THURSDAY_OPEN_AT;
+                closeAt = COLUMN_THURSDAY_CLOSE_AT;
+                break;
+            case "Friday":
+                openAt = COLUMN_FRIDAY_OPEN_AT;
+                closeAt = COLUMN_FRIDAY_CLOSE_AT;
+                break;
+            case "Saturday":
+                openAt = COLUMN_SATURDAY_OPEN_AT;
+                closeAt = COLUMN_SATURDAY_CLOSE_AT;
+                break;
+            case "Sunday":
+                openAt = COLUMN_SUNDAY_OPEN_AT;
+                closeAt = COLUMN_SUNDAY_CLOSE_AT;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid day of the week: " + day);
+        }
         return db.rawQuery("SELECT * FROM " + TABLE_NAME +
-                                    " WHERE " + COLUMN_OPEN_AT + " <= " + time +
-                                    " AND " + COLUMN_CLOSE_AT + " >= " + time +
+                                    " WHERE " + openAt + " <= " + time +
+                                    " AND " + closeAt + " >= " + time +
                                     " AND " + COLUMN_EAT + " = " + YES +
                                     " AND " + COLUMN_DRINK + " = " + YES + "", null);
     }
 
-    public ArrayList<Place> getPlaceEanAndDrinkByTime(int time){
+    public ArrayList<Place> getPlaceEanAndDrinkByTime(int time, String day){
 
         ArrayList<Place> places = new ArrayList<>();
-
+        String openAt = "";
+        String closeAt = "";
+        switch (day){
+            case "Monday":
+                openAt = COLUMN_MONDAY_OPEN_AT;
+                closeAt = COLUMN_MONDAY_CLOSE_AT;
+                break;
+            case "Tuesday":
+                openAt = COLUMN_TUESDAY_OPEN_AT;
+                closeAt = COLUMN_TUESDAY_CLOSE_AT;
+                break;
+            case "Wednesday":
+                openAt = COLUMN_WEDNESDAY_OPEN_AT;
+                closeAt = COLUMN_WEDNESDAY_CLOSE_AT;
+                break;
+            case "Thursday":
+                openAt = COLUMN_THURSDAY_OPEN_AT;
+                closeAt = COLUMN_THURSDAY_CLOSE_AT;
+                break;
+            case "Friday":
+                openAt = COLUMN_FRIDAY_OPEN_AT;
+                closeAt = COLUMN_FRIDAY_CLOSE_AT;
+                break;
+            case "Saturday":
+                openAt = COLUMN_SATURDAY_OPEN_AT;
+                closeAt = COLUMN_SATURDAY_CLOSE_AT;
+                break;
+            case "Sunday":
+                openAt = COLUMN_SUNDAY_OPEN_AT;
+                closeAt = COLUMN_SUNDAY_CLOSE_AT;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid day of the week: " + day);
+        }
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME +
-                " WHERE " + COLUMN_OPEN_AT + " <= " + time +
-                " AND " + COLUMN_CLOSE_AT + " >= " + time +
+                " WHERE " + openAt + " <= " + time +
+                " AND " + closeAt + " >= " + time +
                 " AND " + COLUMN_EAT + " = " + YES +
                 " AND " + COLUMN_DRINK + " = " + YES + "", null);
         res.moveToFirst();
@@ -256,8 +551,20 @@ public class DBHelper extends SQLiteOpenHelper {
                     res.getString(res.getColumnIndex(COLUMN_DESCRIPTION)),
                     res.getInt(res.getColumnIndex(COLUMN_EAT)),
                     res.getInt(res.getColumnIndex(COLUMN_DRINK)),
-                    res.getInt(res.getColumnIndex(COLUMN_OPEN_AT)),
-                    res.getInt(res.getColumnIndex(COLUMN_CLOSE_AT))
+                    res.getInt(res.getColumnIndex(COLUMN_MONDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_TUESDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_THURSDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_FRIDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SATURDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SUNDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_MONDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_TUESDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_THURSDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_FRIDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SATURDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SUNDAY_CLOSE_AT))
             ));
             res.moveToNext();
         }
@@ -272,21 +579,90 @@ public class DBHelper extends SQLiteOpenHelper {
      *              that close at 3 or 4 in the morning.
      * @return a cursor object
      */
-    public Cursor getPlaceCursorByTime(int time){
+    public Cursor getPlaceCursorByTime(int time, String day){
         SQLiteDatabase db = this.getReadableDatabase();
+        String openAt = "";
+        String closeAt = "";
+        switch (day){
+            case "Monday":
+                openAt = COLUMN_MONDAY_OPEN_AT;
+                closeAt = COLUMN_MONDAY_CLOSE_AT;
+                break;
+            case "Tuesday":
+                openAt = COLUMN_TUESDAY_OPEN_AT;
+                closeAt = COLUMN_TUESDAY_CLOSE_AT;
+                break;
+            case "Wednesday":
+                openAt = COLUMN_WEDNESDAY_OPEN_AT;
+                closeAt = COLUMN_WEDNESDAY_CLOSE_AT;
+                break;
+            case "Thursday":
+                openAt = COLUMN_THURSDAY_OPEN_AT;
+                closeAt = COLUMN_THURSDAY_CLOSE_AT;
+                break;
+            case "Friday":
+                openAt = COLUMN_FRIDAY_OPEN_AT;
+                closeAt = COLUMN_FRIDAY_CLOSE_AT;
+                break;
+            case "Saturday":
+                openAt = COLUMN_SATURDAY_OPEN_AT;
+                closeAt = COLUMN_SATURDAY_CLOSE_AT;
+                break;
+            case "Sunday":
+                openAt = COLUMN_SUNDAY_OPEN_AT;
+                closeAt = COLUMN_SUNDAY_CLOSE_AT;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid day of the week: " + day);
+        }
         return db.rawQuery("SELECT * FROM " + TABLE_NAME +
-                " WHERE " + COLUMN_OPEN_AT + " <= " + time +
-                " AND " + COLUMN_CLOSE_AT + " >= " + time + "", null);
+                " WHERE " + openAt + " <= " + time +
+                " AND " + closeAt + " >= " + time + "", null);
     }
 
-    public ArrayList<Place> getPlaceByTime(int time){
+    public ArrayList<Place> getPlaceByTime(int time, String day){
 
         ArrayList<Place> places = new ArrayList<>();
 
+        String openAt = "";
+        String closeAt = "";
+        switch (day){
+            case "Monday":
+                openAt = COLUMN_MONDAY_OPEN_AT;
+                closeAt = COLUMN_MONDAY_CLOSE_AT;
+                break;
+            case "Tuesday":
+                openAt = COLUMN_TUESDAY_OPEN_AT;
+                closeAt = COLUMN_TUESDAY_CLOSE_AT;
+                break;
+            case "Wednesday":
+                openAt = COLUMN_WEDNESDAY_OPEN_AT;
+                closeAt = COLUMN_WEDNESDAY_CLOSE_AT;
+                break;
+            case "Thursday":
+                openAt = COLUMN_THURSDAY_OPEN_AT;
+                closeAt = COLUMN_THURSDAY_CLOSE_AT;
+                break;
+            case "Friday":
+                openAt = COLUMN_FRIDAY_OPEN_AT;
+                closeAt = COLUMN_FRIDAY_CLOSE_AT;
+                break;
+            case "Saturday":
+                openAt = COLUMN_SATURDAY_OPEN_AT;
+                closeAt = COLUMN_SATURDAY_CLOSE_AT;
+                break;
+            case "Sunday":
+                openAt = COLUMN_SUNDAY_OPEN_AT;
+                closeAt = COLUMN_SUNDAY_CLOSE_AT;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid day of the week: " + day);
+        }
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME +
-                " WHERE " + COLUMN_OPEN_AT + " <= " + time +
-                " AND " + COLUMN_CLOSE_AT + " >= " + time + "", null);
+                " WHERE " + openAt + " <= " + time +
+                " AND " + closeAt + " >= " + time + "", null);
         res.moveToFirst();
 
         while(!res.isAfterLast()){
@@ -300,8 +676,20 @@ public class DBHelper extends SQLiteOpenHelper {
                     res.getString(res.getColumnIndex(COLUMN_DESCRIPTION)),
                     res.getInt(res.getColumnIndex(COLUMN_EAT)),
                     res.getInt(res.getColumnIndex(COLUMN_DRINK)),
-                    res.getInt(res.getColumnIndex(COLUMN_OPEN_AT)),
-                    res.getInt(res.getColumnIndex(COLUMN_CLOSE_AT))
+                    res.getInt(res.getColumnIndex(COLUMN_MONDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_TUESDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_THURSDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_FRIDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SATURDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SUNDAY_OPEN_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_MONDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_TUESDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_THURSDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_FRIDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SATURDAY_CLOSE_AT)),
+                    res.getInt(res.getColumnIndex(COLUMN_SUNDAY_CLOSE_AT))
             ));
             res.moveToNext();
         }
@@ -326,7 +714,21 @@ public class DBHelper extends SQLiteOpenHelper {
                                int eat_state,
                                int drink_state,
                                int open,
-                               int close)
+                               int close,
+                               int openmonday,
+                               int opentuesday,
+                               int openwednesday,
+                               int openthursday,
+                               int openfriday,
+                               int opensaturday,
+                               int opensunday,
+                               int closemonday,
+                               int closetuesday,
+                               int closewednesday,
+                               int closethursday,
+                               int closefriday,
+                               int closesaturday,
+                               int closesunday)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -339,8 +741,20 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DESCRIPTION, desc);
         contentValues.put(COLUMN_EAT, eat_state);
         contentValues.put(COLUMN_DRINK, drink_state);
-        contentValues.put(COLUMN_OPEN_AT, open);
-        contentValues.put(COLUMN_CLOSE_AT, close);
+        contentValues.put(COLUMN_MONDAY_OPEN_AT, openmonday);
+        contentValues.put(COLUMN_TUESDAY_OPEN_AT, opentuesday);
+        contentValues.put(COLUMN_WEDNESDAY_OPEN_AT, openwednesday);
+        contentValues.put(COLUMN_THURSDAY_OPEN_AT, openthursday);
+        contentValues.put(COLUMN_FRIDAY_OPEN_AT, openfriday);
+        contentValues.put(COLUMN_SATURDAY_OPEN_AT, opensaturday);
+        contentValues.put(COLUMN_SUNDAY_OPEN_AT, opensunday);
+        contentValues.put(COLUMN_MONDAY_CLOSE_AT, closemonday);
+        contentValues.put(COLUMN_TUESDAY_CLOSE_AT, closetuesday);
+        contentValues.put(COLUMN_WEDNESDAY_CLOSE_AT, closewednesday);
+        contentValues.put(COLUMN_THURSDAY_CLOSE_AT, closethursday);
+        contentValues.put(COLUMN_FRIDAY_CLOSE_AT, closefriday);
+        contentValues.put(COLUMN_SATURDAY_CLOSE_AT, closesaturday);
+        contentValues.put(COLUMN_SUNDAY_CLOSE_AT, closesunday);
         db.update(TABLE_NAME, contentValues, COLUMN_ID + " = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
@@ -373,8 +787,20 @@ public class DBHelper extends SQLiteOpenHelper {
                         res.getString(res.getColumnIndex(COLUMN_DESCRIPTION)),
                         res.getInt(res.getColumnIndex(COLUMN_EAT)),
                         res.getInt(res.getColumnIndex(COLUMN_DRINK)),
-                        res.getInt(res.getColumnIndex(COLUMN_OPEN_AT)),
-                        res.getInt(res.getColumnIndex(COLUMN_CLOSE_AT))
+                        res.getInt(res.getColumnIndex(COLUMN_MONDAY_OPEN_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_TUESDAY_OPEN_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_OPEN_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_THURSDAY_OPEN_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_FRIDAY_OPEN_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_SATURDAY_OPEN_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_SUNDAY_OPEN_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_MONDAY_CLOSE_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_TUESDAY_CLOSE_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_WEDNESDAY_CLOSE_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_THURSDAY_CLOSE_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_FRIDAY_CLOSE_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_SATURDAY_CLOSE_AT)),
+                        res.getInt(res.getColumnIndex(COLUMN_SUNDAY_CLOSE_AT))
                     )
             );
 
