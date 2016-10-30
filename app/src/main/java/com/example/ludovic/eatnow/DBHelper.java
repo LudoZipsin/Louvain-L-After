@@ -71,22 +71,22 @@ public class DBHelper extends SQLiteOpenHelper {
                     COLUMN_LOCATION_CITY + " TEXT, " +
                     COLUMN_LOCATION_PHONE + " TEXT, " +
                     COLUMN_LOCATION_ADDRESS + " TEXT, " +
-                    COLUMN_LOCATION_DESCRIPTION  + " TEXT " +
-                    COLUMN_LOCATION_EAT  + " INTEGER " +
-                    COLUMN_LOCATION_DRINK  + " INTEGER " +
-                    COLUMN_LOCATION_MONDAY_OPEN_AT + " INTEGER" +
-                    COLUMN_LOCATION_TUESDAY_OPEN_AT + " INTEGER" +
-                    COLUMN_LOCATION_WEDNESDAY_OPEN_AT + " INTEGER" +
-                    COLUMN_LOCATION_THURSDAY_OPEN_AT + " INTEGER" +
-                    COLUMN_LOCATION_FRIDAY_OPEN_AT + " INTEGER" +
-                    COLUMN_LOCATION_SATURDAY_OPEN_AT + " INTEGER" +
-                    COLUMN_LOCATION_SUNDAY_OPEN_AT + " INTEGER" +
-                    COLUMN_LOCATION_MONDAY_CLOSE_AT + " INTEGER" +
-                    COLUMN_LOCATION_TUESDAY_CLOSE_AT + " INTEGER" +
-                    COLUMN_LOCATION_WEDNESDAY_CLOSE_AT + " INTEGER" +
-                    COLUMN_LOCATION_THURSDAY_CLOSE_AT + " INTEGER" +
-                    COLUMN_LOCATION_FRIDAY_CLOSE_AT + " INTEGER" +
-                    COLUMN_LOCATION_SATURDAY_CLOSE_AT + " INTEGER" +
+                    COLUMN_LOCATION_DESCRIPTION  + " TEXT, " +
+                    COLUMN_LOCATION_EAT  + " INTEGER, " +
+                    COLUMN_LOCATION_DRINK  + " INTEGER, " +
+                    COLUMN_LOCATION_MONDAY_OPEN_AT + " INTEGER, " +
+                    COLUMN_LOCATION_TUESDAY_OPEN_AT + " INTEGER, " +
+                    COLUMN_LOCATION_WEDNESDAY_OPEN_AT + " INTEGER, " +
+                    COLUMN_LOCATION_THURSDAY_OPEN_AT + " INTEGER, " +
+                    COLUMN_LOCATION_FRIDAY_OPEN_AT + " INTEGER, " +
+                    COLUMN_LOCATION_SATURDAY_OPEN_AT + " INTEGER, " +
+                    COLUMN_LOCATION_SUNDAY_OPEN_AT + " INTEGER, " +
+                    COLUMN_LOCATION_MONDAY_CLOSE_AT + " INTEGER, " +
+                    COLUMN_LOCATION_TUESDAY_CLOSE_AT + " INTEGER, " +
+                    COLUMN_LOCATION_WEDNESDAY_CLOSE_AT + " INTEGER, " +
+                    COLUMN_LOCATION_THURSDAY_CLOSE_AT + " INTEGER, " +
+                    COLUMN_LOCATION_FRIDAY_CLOSE_AT + " INTEGER, " +
+                    COLUMN_LOCATION_SATURDAY_CLOSE_AT + " INTEGER, " +
                     COLUMN_LOCATION_SUNDAY_CLOSE_AT + " INTEGER" +
                     ")"
         );

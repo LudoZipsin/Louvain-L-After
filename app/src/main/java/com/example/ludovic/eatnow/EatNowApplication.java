@@ -24,15 +24,11 @@ public class EatNowApplication  extends Application {
         super.onCreate();
         appInstance = this;
         dbHelper = new DBHelper(this);
-        //Intent mainActivity = new Intent(EatNowApplication.this, MainActivity.class);
         if (this.dbHelper.numberOfRowsUser() == 0){
             String userID = UUID.randomUUID().toString().replaceAll("-", "");
             this.dbHelper.insertUserID(userID);
-            Log.i("EatNowApplication: ", "userId = " + userID);
         }
-        Log.i("EatNowApplication: ", "userId = " + this.dbHelper.getUserID());
         Intent bgService = new Intent(this, BGService.class);
-        bgService.putExtra("userID", this.dbHelper.getUserID());
         startService(bgService);
     }
 
