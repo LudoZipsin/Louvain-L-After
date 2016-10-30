@@ -16,7 +16,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -735,10 +734,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public int numberOfRowsUser(){
-        Log.i("DBHelper: ", "numberOfRowsUser 1");
         SQLiteDatabase db = this.getReadableDatabase();
-        Log.i("DBHelper: ", "numberOfRowsUser 2");
-        Log.i("DBHelper: ", String.valueOf(DatabaseUtils.queryNumEntries(db, TABLE_NAME_USER)));
         return (int) DatabaseUtils.queryNumEntries(db, TABLE_NAME_USER);
     }
 

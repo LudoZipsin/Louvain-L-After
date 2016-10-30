@@ -22,25 +22,18 @@ public class EatNowApplication  extends Application {
     @Override
     public void onCreate(){
         super.onCreate();
-        Log.i("App", "start 1");
         appInstance = this;
-        Log.i("App", "start 2");
         dbHelper = new DBHelper(this);
-        Log.i("App", "start 3");
-        Intent mainActivity = new Intent(EatNowApplication.this, MainActivity.class);
-        Log.i("App", "start 4");
+        //Intent mainActivity = new Intent(EatNowApplication.this, MainActivity.class);
         if (this.dbHelper.numberOfRowsUser() == 0){
-            Log.i("App", "start 5");
             String userID = UUID.randomUUID().toString().replaceAll("-", "");
-            Log.i("App", "Log 1: " + userID );
             this.dbHelper.insertUserID(userID);
-            Log.i("App", userID);
+            Log.i("EatNowApplication: ", "userId = " + userID);
         }
-        //Intent bgService = new Intent(this, BGServiceIntent.class);
-        //bgService.putExtra("userID", this.dbHelper.getUserID());
-        //startService(bgService);
-        mainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(mainActivity);
+        Log.i("EatNowApplication: ", "userId = " + this.dbHelper.getUserID());
+        Intent bgService = new Intent(this, BGService.class);
+        bgService.putExtra("userID", this.dbHelper.getUserID());
+        startService(bgService);
     }
 
     public static synchronized EatNowApplication getAppInstance(){
