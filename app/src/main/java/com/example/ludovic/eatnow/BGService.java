@@ -33,7 +33,7 @@ public class BGService extends Service {
                 while(true)
                 {
                     try {
-                        Thread.sleep(20*SECONDE); // 5*MINUTE
+                        Thread.sleep(5*SECONDE); // 5*MINUTE
                         Log.i("BGService", "loop thread... sending from user " + userID);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block

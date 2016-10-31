@@ -1,6 +1,8 @@
 package com.example.ludovic.eatnow;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.util.Log;
 
@@ -35,4 +37,6 @@ public class EatNowApplication  extends Application {
     public static synchronized EatNowApplication getAppInstance(){
         return appInstance;
     }
+
+
 }
