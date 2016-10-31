@@ -21,14 +21,34 @@
 
         <service
             android:name=".BGService"
-            android:enabled="true"
-        ></service>
+            android:process=":remote"
+            >
+            <intent-filter>
+                <action android:name="com.example.ludovic.eatnow"/>
+            </intent-filter>
+        </service>
+        <!-- android:exported="false"
+         android:enabled="true"-->
+
 
         <receiver android:name=".AutomaticStart">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:process=":remote_service">
+        </receiver>
+
+        <!--
+        <service android:name=".services.MyLongRunningService" android:process=":remote">
+<intent-filter>
+<action android:name="com.abc.services.MyLongRunningService"/>
+</intent-filter>
+</service>
+        -->
 
     </application>
 
