@@ -19,6 +19,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ActivityListPlaces">
+        </activity>
+
         <service
             android:name=".BGService"
             android:enabled="true"
