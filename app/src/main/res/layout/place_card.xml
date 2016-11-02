@@ -5,37 +5,59 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     card_view:cardCornerRadius="4dp"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bkg_card">
+        android:background="@color/bkg_card"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
 
         <TextView
             android:id="@+id/place_name"
             android:layout_width="match_parent"
             android:layout_height="26dp"
-            android:text="tester Name"
+            android:text="Lubas favere! "
             android:gravity="left"
             android:textSize="20dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="10dp"
             />
-        <TextView
-            android:id="@+id/place_description"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:gravity="left"
-            android:text="description of the application. Très long de préférence de manière a teter le comportement multiligne"
-            android:layout_below="@+id/place_name"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="15dp"
-            />
+            android:layout_height="wrap_content"
+            android:weightSum="60"
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/place_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Manifestation follows when you love with density. Equisos cadunt, tanquam neuter gemna. Try crushing meatballs pie mixed with lime. Urchin, amnesty, and greed. "
+                android:paddingTop="4dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:layout_weight="50"
+                />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:layout_gravity="center"
+                android:paddingTop="10dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/round_button"
+                android:drawableTop="@drawable/ic_navigation"
+                />
+
+        </LinearLayout>
         <!--
         <TextView
             android:id="@+id/title"
@@ -80,4 +102,4 @@
             android:layout_alignBaseline="@id/txtName"/>
             -->
 
-    </RelativeLayout>
+    </LinearLayout>
