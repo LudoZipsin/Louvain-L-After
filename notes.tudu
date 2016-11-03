@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE tudu SYSTEM "/usr/share/tudu/tudu.dtd">
+<todo>
+	<todo done="no" collapse="no">
+		<title>Cardfield</title>
+		<text>"tudu" is a tool to manage "to do" lists.
+</text>
+		<todo done="no" collapse="no">
+			<title>Button-&gt;place_navigation_button</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>TextView-&gt;place_description</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>TextView-&gt;place_name</title>
+			<text>
+</text>
+		</todo>
+	</todo>
+</todo>
