@@ -51,6 +51,7 @@ public class DBHelper extends SQLiteOpenHelper {
     protected static final String TABLE_NAME_USER = "user";
     protected static final String COLUMN_USER_ID = "id";
 
+
     private static final int YES = 1;
     //private static final int NO = 0;
 
@@ -107,6 +108,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
         insertUserID(id);
     }
+
 
     public boolean insertUserID(String id){
         SQLiteDatabase db = this.getWritableDatabase();

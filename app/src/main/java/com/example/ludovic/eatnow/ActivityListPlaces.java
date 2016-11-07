@@ -7,10 +7,17 @@ package com.example.ludovic.eatnow;
  */
 
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,10 +27,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 
-public class ActivityListPlaces extends AppCompatActivity {
+public class ActivityListPlaces extends AppCompatActivity implements LocationListener{
 
     private DBHelper dbHelper;
+    private double latitude;
+    private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +50,22 @@ public class ActivityListPlaces extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), type, Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(), Integer.toString(getTime()), Toast.LENGTH_LONG).show();
         // FIN TEST
+
+        // Location Test
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // WE ASSUME THE APPLICATION ALREADY HAVE ALL THIS PERMISSION
+            // BUT ANDROID FORCE TO PUT THIS TEST IN
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
+        latitude = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+        longitude = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+        Log.i("ActivityListPlaces.java", "Lat: "+String.valueOf(latitude));
+        Log.i("ActivityListPlaces.java", "Lon: "+String.valueOf(longitude));
+        // Fin Location Test
+
         this.dbHelper = new DBHelper(getApplicationContext());
         ArrayList<Place> placeArrayList = new ArrayList<Place>();
         switch (type){
@@ -55,6 +82,10 @@ public class ActivityListPlaces extends AppCompatActivity {
                 break;
         }
         PlaceAdapter placeAdapter = new PlaceAdapter(placeArrayList);
+        for (Place place : placeArrayList){
+            place.setDistance(latitude, longitude);
+        }
+        Collections.sort(placeArrayList);
         recList.setAdapter(placeAdapter);
     }
 
@@ -67,11 +98,11 @@ public class ActivityListPlaces extends AppCompatActivity {
         return time;
     }
 
-    private String getDay(){
+    private String getDay() {
         Calendar calendar = Calendar.getInstance();
         String day = "";
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        switch (dayOfWeek){
+        switch (dayOfWeek) {
             case 1:
                 day = "Monday";
                 break;
@@ -99,64 +130,25 @@ public class ActivityListPlaces extends AppCompatActivity {
         return day;
     }
 
+
+    @Override
+    public void onLocationChanged(Location location){
+        location.getLatitude();
+        location.getLongitude();
+    }
+
+    @Override
+    public void onProviderDisabled(String provider){
+        Toast.makeText( getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onProviderEnabled(String provider){
+        Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
 }
-
-/*
-
-public class MyActivity extends Activity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_my);
-
-        setContentView(R.layout.activity_my);
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-        recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
-
-        ContactAdapter ca = new ContactAdapter(createList(30));
-        recList.setAdapter(ca);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.my, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-
-    private List<ContactInfo> createList(int size) {
-
-        List<ContactInfo> result = new ArrayList<ContactInfo>();
-        for (int i=1; i <= size; i++) {
-            ContactInfo ci = new ContactInfo();
-            ci.name = ContactInfo.NAME_PREFIX + i;
-            ci.surname = ContactInfo.SURNAME_PREFIX + i;
-            ci.email = ContactInfo.EMAIL_PREFIX + i + "@test.com";
-
-            result.add(ci);
-
-        }
-
-        return result;
-    }
-}
-*/

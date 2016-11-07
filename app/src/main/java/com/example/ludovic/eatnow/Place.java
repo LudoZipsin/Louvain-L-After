@@ -6,7 +6,7 @@ package com.example.ludovic.eatnow;
  * Github: https://github.com/LudoZipsin
  */
 
-public class Place {
+public class Place implements Comparable<Place>{
 
     protected String name;
     protected double lat;
@@ -81,6 +81,11 @@ public class Place {
         this.closefriday = closefriday;
         this.closesaturday = closesaturday;
         this.closesunday = closesunday;
+    }
+
+    public int compareTo(Place p){
+        if (this.getDistance() == p.getDistance()) return 0;
+        return this.getDistance() < p.getDistance() ? -1 : 1;
     }
 
     public double getDistance(){
