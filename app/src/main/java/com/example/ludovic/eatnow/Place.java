@@ -31,6 +31,7 @@ public class Place {
     protected int closefriday;
     protected int closesaturday;
     protected int closesunday;
+    protected double distance;
 
     public Place(String name,
                  double lat,
@@ -80,6 +81,18 @@ public class Place {
         this.closefriday = closefriday;
         this.closesaturday = closesaturday;
         this.closesunday = closesunday;
+    }
+
+    public double getDistance(){
+        return distance;
+    }
+
+    public void setDistance(double distance){
+        this.distance = distance;
+    }
+
+    public void setDistance(double lat, double lon){
+        this.setDistance(Math.pow(lat-this.lat,2) + Math.pow(lon-this.lon,2));
     }
 
     public String getName() {

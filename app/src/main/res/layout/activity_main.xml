@@ -34,7 +34,8 @@
             android:background="@color/colorEatAndDrink"
             android:layout_margin="5dp"
             android:padding="5dp"
-            android:onClick="getEatAndDrink"/>
+            android:onClick="getEatAndDrink"
+            android:tag="both"/>
     </LinearLayout>
 
     <LinearLayout
@@ -51,7 +52,8 @@
             android:background="@color/colorEat"
             android:layout_margin="5dp"
             android:padding="5dp"
-            android:onClick="getEat"/>
+            android:onClick="getEatAndDrink"
+            android:tag="eat"/>
 
         <Button
             android:layout_width="fill_parent"
@@ -60,7 +62,8 @@
             android:background="@color/colorDrink"
             android:layout_margin="5dp"
             android:padding="5dp"
-            android:onClick="getDrink"/>
+            android:onClick="getEatAndDrink"
+            android:tag="drink"/>
     </LinearLayout>
 
 </LinearLayout>

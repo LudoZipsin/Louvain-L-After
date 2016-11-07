@@ -38,6 +38,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
             @Override
             public void onClick(View view) {
                 //TODO launch detailed activity with map and button for navigation
+
             }
         });
         placeViewHolder.btnNavigation.setOnClickListener(new View.OnClickListener() {

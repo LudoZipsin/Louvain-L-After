@@ -748,8 +748,6 @@ public class DBHelper extends SQLiteOpenHelper {
                                String desc,
                                int eat_state,
                                int drink_state,
-                               int open,
-                               int close,
                                int openmonday,
                                int opentuesday,
                                int openwednesday,
