@@ -81,7 +81,7 @@ public class ActivityListPlaces extends AppCompatActivity implements LocationLis
             default:
                 break;
         }
-        PlaceAdapter placeAdapter = new PlaceAdapter(placeArrayList);
+        PlaceAdapter placeAdapter = new PlaceAdapter(placeArrayList, ActivityListPlaces.this);
         for (Place place : placeArrayList){
             place.setDistance(latitude, longitude);
         }
