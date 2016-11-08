@@ -37,6 +37,9 @@
         <activity android:name=".ActivityListPlaces">
         </activity>
 
+        <activity android:name=".DetailedPlaceActivity">
+        </activity>
+
         <service
             android:name=".BGService"
             android:enabled="true"

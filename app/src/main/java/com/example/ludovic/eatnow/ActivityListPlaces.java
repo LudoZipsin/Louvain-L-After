@@ -8,6 +8,7 @@ package com.example.ludovic.eatnow;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -81,7 +82,8 @@ public class ActivityListPlaces extends AppCompatActivity implements LocationLis
             default:
                 break;
         }
-        PlaceAdapter placeAdapter = new PlaceAdapter(placeArrayList, ActivityListPlaces.this);
+        PlaceAdapter placeAdapter = new PlaceAdapter(placeArrayList);
+        placeAdapter.setActivity((Activity) this);
         for (Place place : placeArrayList){
             place.setDistance(latitude, longitude);
         }

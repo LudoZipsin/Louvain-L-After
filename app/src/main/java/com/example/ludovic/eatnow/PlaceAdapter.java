@@ -24,8 +24,11 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
     private ArrayList<Place> placeList;
     private Activity activity;
 
-    public PlaceAdapter(ArrayList<Place> placeList, Activity activity){
+    public PlaceAdapter(ArrayList<Place> placeList){
         this.placeList = placeList;
+    }
+
+    public void setActivity(Activity activity){
         this.activity = activity;
     }
 
@@ -43,7 +46,8 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
             @Override
             public void onClick(View view) {
                 //TODO launch detailed activity with map and button for navigation
-                Intent intent = new Intent(activity, DetailedPlaceActivity.class);
+                Intent intent = new Intent(activity.getBaseContext() ,DetailedPlaceActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("name",place.getName());
                 intent.putExtra("lat",place.getLat());
                 intent.putExtra("lon",place.getLon());
@@ -64,13 +68,15 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
                 intent.putExtra("closefriday", place.getCloseFriday());
                 intent.putExtra("closesaturday", place.getCloseSaturday());
                 intent.putExtra("closesunday", place.getCloseSunday());
-                activity.startActivity(intent);
+                activity.getBaseContext().startActivity(intent);
             }
         });
         placeViewHolder.btnNavigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO launch activity for navigation
+                //Intent intent = new Intent(activity, DetailedPlaceActivity.class);
+
             }
         });
     }
