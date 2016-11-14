@@ -9,12 +9,7 @@ package com.example.ludovic.eatnow;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -28,7 +23,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 
 public class ActivityListPlaces extends AppCompatActivity implements LocationListener{
@@ -36,10 +30,21 @@ public class ActivityListPlaces extends AppCompatActivity implements LocationLis
     private DBHelper dbHelper;
     private double latitude;
     private double longitude;
+    private LocationManager locationManagerGPS;
+    private LocationManager locationManagerNetwork;
+    private EatNowApplication appInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appInstance = EatNowApplication.getAppInstance();
+
+        // Location Test
+        locationManagerGPS = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationManagerNetwork = (LocationManager) getSystemService(LOCATION_SERVICE);
+        
+        this.dbHelper = appInstance.getDbHelper();
+
         setContentView(R.layout.activity_list_place);
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
         recList.setHasFixedSize(true);
@@ -48,28 +53,16 @@ public class ActivityListPlaces extends AppCompatActivity implements LocationLis
         recList.setLayoutManager(linearLayoutManager);
         String type = getIntent().getExtras().getString("type");
         // TEST
+        Log.d("ActivityListPlace", "ok there");
         Toast.makeText(getApplicationContext(), type, Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(), Integer.toString(getTime()), Toast.LENGTH_LONG).show();
         // FIN TEST
 
-        // Location Test
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // WE ASSUME THE APPLICATION ALREADY HAVE ALL THIS PERMISSION
-            // BUT ANDROID FORCE TO PUT THIS TEST IN
-            return;
-        }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
-        latitude = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
-        longitude = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
-        Log.i("ActivityListPlaces.java", "Lat: "+String.valueOf(latitude));
-        Log.i("ActivityListPlaces.java", "Lon: "+String.valueOf(longitude));
-        // Fin Location Test
+        Location location = getLocation();
 
         this.dbHelper = new DBHelper(getApplicationContext());
         ArrayList<Place> placeArrayList = new ArrayList<Place>();
-        switch (type){
+        switch (type) {
             case "both":
                 placeArrayList = this.dbHelper.getPlaceByTime(getTime(), getDay());
                 break;
@@ -84,11 +77,47 @@ public class ActivityListPlaces extends AppCompatActivity implements LocationLis
         }
         PlaceAdapter placeAdapter = new PlaceAdapter(placeArrayList);
         placeAdapter.setActivity((Activity) this);
-        for (Place place : placeArrayList){
-            place.setDistance(latitude, longitude);
+
+
+        if (location == null){
+            Log.d("ActivityListPlace", "Yep... that's null");
+            Toast.makeText(getApplicationContext(), "Unable to find location. " + generateStringPlace(getIntent().getExtras().getString("type")) + " will be list by alphabetical order.", Toast.LENGTH_LONG).show();
+        } else {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            Log.i("ActivityListPlaces.java", "Lat: " + String.valueOf(latitude));
+            Log.i("ActivityListPlaces.java", "Lon: " + String.valueOf(longitude));
+            // Fin Location Test
+            for (Place place : placeArrayList) {
+                place.setDistance(latitude, longitude);
+            }
+            Collections.sort(placeArrayList);
         }
-        Collections.sort(placeArrayList);
         recList.setAdapter(placeAdapter);
+    }
+
+    private String generateStringPlace(String type){
+        if (type.equals("both")) return "Bars and Restaurants";
+        if (type.equals("drink")) return "Bars";
+        if (type.equals("eat")) return "Restaurants";
+        return null;
+    }
+
+    private Location getLocation(){
+        locationManagerGPS = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationManagerNetwork = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // WE ASSUME THE APPLICATION ALREADY HAVE ALL THIS PERMISSION
+            // BUT ANDROID FORCE TO PUT THIS TEST IN
+            return null;
+        }
+        locationManagerGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
+        locationManagerNetwork.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,this);
+
+        Location locationGPS = locationManagerGPS.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location locationNetwork = locationManagerGPS.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        return (locationGPS != null) ? locationGPS : locationNetwork;
     }
 
     private int getTime(){
@@ -135,6 +164,7 @@ public class ActivityListPlaces extends AppCompatActivity implements LocationLis
 
     @Override
     public void onLocationChanged(Location location){
+
         location.getLatitude();
         location.getLongitude();
     }

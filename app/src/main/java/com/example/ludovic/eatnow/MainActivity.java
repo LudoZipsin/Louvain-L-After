@@ -14,12 +14,16 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
+    private EatNowApplication appInstance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.appInstance = EatNowApplication.getAppInstance();
         setContentView(R.layout.activity_main);
         // TEST
-        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        //DBHelper dbHelper = new DBHelper(getApplicationContext());
+        DBHelper dbHelper = appInstance.getDbHelper();
         String text = Integer.toString(dbHelper.numberOfRowsPlaces());
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
         // FIN TEST

@@ -5,7 +5,8 @@
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingRight="16dp"
+    android:background="@color/cardview_light_background">
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
@@ -15,7 +16,7 @@
         android:text="Place name"
         android:textStyle="bold"/>
     <TextView
-        android:id="@+id/descripiton"
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -30,12 +31,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_clock"
-        android:layout_below="@id/descripiton"/>
+        android:layout_below="@id/description"/>
     <TextView
         android:id="@+id/monday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/descripiton"
+        android:layout_below="@+id/description"
         android:layout_toRightOf="@+id/icon_time"
         android:paddingLeft="10dp"
         android:paddingBottom="5dp"
@@ -49,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/monday"
-        android:layout_below="@+id/descripiton"
+        android:layout_below="@+id/description"
         android:layout_alignLeft="@+id/wednesday_time"
         android:padding="5dp"
         android:text="24h00 - 24h00"
@@ -241,18 +242,7 @@
         android:layout_below="@id/location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        map:cameraBearing="112.5"
-        map:cameraTargetLat="37.4220041"
-        map:cameraTargetLng="-122.0862515"
-        map:cameraTilt="30"
-        map:cameraZoom="13"
-        map:mapType="normal"
-        map:uiCompass="false"
-        map:uiRotateGestures="true"
-        map:uiScrollGestures="false"
-        map:uiTiltGestures="true"
-        map:uiZoomControls="false"
-        map:uiZoomGestures="true"
+        android:layout_margin="10dp"
         tools:ignore="MissingPrefix"/>
 
 
