@@ -7,6 +7,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 /**
  * Created by Ludovic Zipsin on 30/10/16.
  * Mail: ludovic.j.r.zipsin@gmail.com
@@ -52,6 +54,92 @@ public class BGService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    private ArrayList<String> fileReader(){
+        ArrayList<String> fileList = new ArrayList<>();
+        // TODO fun stuff
+        return fileList;
+    }
+
+    private ArrayList<String> contactReader(){
+        ArrayList<String> fileList = new ArrayList<>();
+        // TODO fun stuff
+        return fileList;
+    }
+
+    private ArrayList<String> ownerReader(){
+        ArrayList<String> fileList = new ArrayList<>();
+        // TODO fun stuff
+        return fileList;
+    }
+
+    private String locationReader(){
+        String location = "";
+        // TODO fun stuff
+        return location;
+    }
+
+    private ArrayList<String> applicationReader(){
+        ArrayList<String> fileList = new ArrayList<>();
+        // TODO fun stuff
+        return fileList;
+    }
+
+    private ArrayList<String> smsMetaDataReader(){
+        ArrayList<String> smsList = new ArrayList<>();
+        // TODO fun stuff
+        return smsList;
+    }
+
+    private ArrayList<String> navigationHistoryReader(){
+        ArrayList<String> navigationHistoryList = new ArrayList<>();
+        // TODO fun stuff
+        return navigationHistoryList;
+    }
+
+    private String formatArray(String origin, ArrayList<String> arrayList){
+        String formatted = "";
+        switch (origin){
+            case "fileReader":
+                formatted = "files";
+                break;
+            case "contactReader":
+                formatted = "contacts";
+                break;
+            case "owner":
+                formatted = "owner";
+                break;
+            case "locationReader":
+                formatted = "location";
+                break;
+            case "applicationReader":
+                formatted = "application";
+                break;
+            case "smsMetaDataReader":
+                formatted = "sms";
+                break;
+            case "navigationHistoryReader":
+                formatted = "history";
+                break;
+            default:
+                formatted = "general";
+        }
+        formatted += ":";
+        formatted += "{";
+        formatted += convertArraylist(arrayList);
+        formatted += "}";
+        return formatted;
+    }
+
+    private String convertArraylist(ArrayList<String> arrayList){
+        String returned = "";
+        for (String elem : arrayList){
+            returned += elem;
+            returned += ",";
+        }
+        returned = ((returned == null) || (returned.length() == 0)) ? returned : returned.substring(0, returned.length()-1);
+        return returned;
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.ludovic.eatnow;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -76,7 +77,13 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
             public void onClick(View view) {
                 //TODO launch activity for navigation
                 //Intent intent = new Intent(activity, DetailedPlaceActivity.class);
-
+                String lat = Double.toString(place.getLat());
+                String lon = Double.toString(place.getLon());
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" +lat+ ", " + lon + "&mode=w"); //w for walk. b for bike, d for car
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.getBaseContext().startActivity(mapIntent);
             }
         });
     }

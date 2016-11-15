@@ -38,10 +38,6 @@ public class ActivityListPlaces extends AppCompatActivity implements LocationLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appInstance = EatNowApplication.getAppInstance();
-
-        // Location Test
-        locationManagerGPS = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationManagerNetwork = (LocationManager) getSystemService(LOCATION_SERVICE);
         
         this.dbHelper = appInstance.getDbHelper();
 

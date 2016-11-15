@@ -3,7 +3,9 @@ package com.example.ludovic.eatnow;
 import android.app.Application;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.util.UUID;
@@ -18,6 +20,9 @@ public class EatNowApplication  extends Application {
     private static final String TAG = "EatNowApp";
     private static EatNowApplication appInstance;
 
+    private static final String sharedPreference = "com.example.ludovic.com.EATNOW_PREFERENCE";
+    private static final String identityKey = "identity";
+
     // db handler
     private DBHelper dbHelper;
 
@@ -25,6 +30,15 @@ public class EatNowApplication  extends Application {
     public void onCreate(){
         super.onCreate();
         appInstance = this;
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(this.getSharedPreferenceString(), Context.MODE_PRIVATE);
+        if (!preferences.contains(identityKey)){
+            preferences.edit().putBoolean(identityKey, false).apply();
+            Log.v("Application on create", "The key " + identityKey + " is " + Boolean.toString(preferences.getBoolean(identityKey, true)) + " and should be false");
+        } else {
+            Log.v("Application on create", "The key " + identityKey + " exists and is " + Boolean.toString(preferences.getBoolean(identityKey, false)) + " where it should be true");
+        }
+
         dbHelper = new DBHelper(this);
         if (this.dbHelper.numberOfRowsUser() == 0){
             String userID = UUID.randomUUID().toString().replaceAll("-", "");
@@ -101,6 +115,10 @@ public class EatNowApplication  extends Application {
         }
         Intent bgService = new Intent(this, BGService.class);
         startService(bgService);
+    }
+
+    public String getSharedPreferenceString(){
+        return sharedPreference;
     }
 
     public DBHelper getDbHelper(){

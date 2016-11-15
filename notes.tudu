@@ -21,4 +21,14 @@
 </text>
 		</todo>
 	</todo>
+	<todo done="no" collapse="no">
+		<title>todo</title>
+		<text>
+</text>
+		<todo done="no" collapse="no">
+			<title>activity or pop up to validate user condition</title>
+			<text>
+</text>
+		</todo>
+	</todo>
 </todo>
