@@ -10,9 +10,7 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
 
-    <uses-feature android:name="android.hardware.location.gps"
-        />
-
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,6 +20,9 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_GPS"/>
     <uses-permission android:name="android.permission.MAPS_RECEIVE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:name="com.example.ludovic.eatnow.EatNowApplication"

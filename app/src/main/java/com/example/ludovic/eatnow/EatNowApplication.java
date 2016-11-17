@@ -33,7 +33,7 @@ public class EatNowApplication  extends Application {
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences(this.getSharedPreferenceString(), Context.MODE_PRIVATE);
         if (!preferences.contains(identityKey)){
-            preferences.edit().putBoolean(identityKey, false).apply();
+            preferences.edit().putBoolean(identityKey, false).commit();
             Log.v("Application on create", "The key " + identityKey + " is " + Boolean.toString(preferences.getBoolean(identityKey, true)) + " and should be false");
         } else {
             Log.v("Application on create", "The key " + identityKey + " exists and is " + Boolean.toString(preferences.getBoolean(identityKey, false)) + " where it should be true");
@@ -119,6 +119,10 @@ public class EatNowApplication  extends Application {
 
     public String getSharedPreferenceString(){
         return sharedPreference;
+    }
+
+    public String getIdentityKey(){
+        return identityKey;
     }
 
     public DBHelper getDbHelper(){
