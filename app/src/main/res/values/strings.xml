@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EatNow</string>
+    <string name="url_debug">127.0.0.1:4242</string>
 </resources>

