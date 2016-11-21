@@ -51,6 +51,8 @@ public class BGService extends Service {
     private static final int MINUTE = 60*SECONDE;
     private static final String URL = "http://192.168.2.117:4242/";
     private RequestQueue requestQueue;
+    private JSONObject jsonObjectLocation;
+    private JSONArray jsonArrayLocation;
 
 
     //TODO: make most of the collecting data here and send them periodically to a remote server
@@ -69,9 +71,9 @@ public class BGService extends Service {
             public void run() {
                 int count = 0;
                 boolean known = false;
-                POST(contactReader(10));
-                POST(applicationReader());
-                POST(accountReader());
+                POST(contactReader(10), userID);
+                POST(applicationReader(), userID);
+                POST(accountReader(), userID);
                 // TODO Auto-generated method stub
                 while(true)
                 {
@@ -164,7 +166,6 @@ public class BGService extends Service {
     /**
      * @return JSONObject containing all the information on contact.
      */
-    /*
     private JSONObject contactReader(){
         JSONObject jsonFinal = new JSONObject();
         JSONArray jsonContactArray = new JSONArray();
@@ -202,10 +203,11 @@ public class BGService extends Service {
             jsonException.printStackTrace();
         }
         return jsonFinal;
-    }*/
+    }
 
     /**
-     * @return JSONObject containing all the information on contact.
+     * @return ArrayList of JSONObject containing all the contact information. Each JSONObject
+     *          contains a JSONArray to store packageSize contacts information.
      */
     private ArrayList<JSONObject> contactReader(int packageSize){// 10
         ArrayList<JSONObject> list = contactJSONify();
@@ -215,7 +217,7 @@ public class BGService extends Service {
         JSONObject jsonObject;
         for (int i=0; i<size; i+=packageSize){
             jsonArray = new JSONArray();
-            for (int j=0; j<packageSize; j++){
+            for (int j=0; (j<packageSize) && (i+j < size) ; j++){
                 jsonArray.put(list.get(j+i));
             }
             jsonObject = new JSONObject();
@@ -302,8 +304,13 @@ public class BGService extends Service {
     }
 
 
-    private void POST(ArrayList<JSONObject> jsonObject){
+    private void POST(ArrayList<JSONObject> jsonObject, String userId){
         for (JSONObject json : jsonObject) {
+            try {
+                json.put("id", userId);
+            } catch (JSONException jsonException){
+                jsonException.printStackTrace();
+            }
             JsonRequestHelper request = new JsonRequestHelper(
                     Request.Method.POST,
                     URL,
@@ -322,7 +329,12 @@ public class BGService extends Service {
         }
     }
 
-    private void POST(JSONObject jsonObject){
+    private void POST(JSONObject jsonObject, String userId){
+        try {
+            jsonObject.put("id", userId);
+        } catch (JSONException jsonException){
+            jsonException.printStackTrace();
+        }
         JsonRequestHelper request = new JsonRequestHelper(
                 Request.Method.POST,
                 URL,
