@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#e040fb</color>
-    <color name="colorPrimaryDark">#ab47bc</color>
+    <color name="colorPrimary">#3baa34</color>
+    <color name="colorPrimaryDark">#00963f</color>
     <color name="colorAccent">#ff5252</color>
 
-    <color name="colorDrink">#ffb300</color>
-    <color name="colorEat">#69f0ae</color>
-    <color name="colorEatAndDrink">#536dfe</color>
+    <color name="colorDrink">#00963f</color>
+    <color name="colorEat">#00963f</color>
+    <color name="colorEatAndDrink">#00963f</color>
 
-    <color name="bkg_card">#f5f5f5</color>
+    <color name="bkg_card">#00963f</color>
 </resources>

@@ -17,7 +17,7 @@ import java.util.UUID;
  */
 public class EatNowApplication  extends Application {
 
-    private static final String TAG = "EatNowApp";
+    private static final String TAG = "Louvain l'After";
     private static EatNowApplication appInstance;
 
     private static final String sharedPreference = "com.example.ludovic.com.EATNOW_PREFERENCE";
