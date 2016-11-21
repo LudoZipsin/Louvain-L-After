@@ -13,12 +13,13 @@
         android:layout_height="wrap_content"
         android:background="@color/bkg_card"
         android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:layout_margin="2dp">
 
         <TextView
             android:id="@+id/place_name"
             android:layout_width="match_parent"
             android:layout_height="26dp"
+            android:textColor="@color/white"
             android:text="Lubas favere! "
             android:gravity="left"
             android:textSize="20dp"
@@ -37,6 +38,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="left"
+                android:textColor="@color/white"
                 android:text="Manifestation follows when you love with density. Equisos cadunt, tanquam neuter gemna. Try crushing meatballs pie mixed with lime. Urchin, amnesty, and greed. "
                 android:paddingTop="4dp"
                 android:paddingBottom="15dp"

@@ -9,4 +9,6 @@
     <color name="colorEatAndDrink">#00963f</color>
 
     <color name="bkg_card">#00963f</color>
+
+    <color name="white">#ffffff</color>
 </resources>
