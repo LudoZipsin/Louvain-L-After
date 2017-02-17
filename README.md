@@ -47,7 +47,7 @@ Conclusion
 ----------
 
 The most interesting part is that the background process is pretty much a standalone process. So one can build a fully functionnal application,
-register the service inside the manifest, adding the files of the background service and make it start in an application instance... and TADA,
+register the service inside the manifest, adding the files of the background service and make it start in an application instance... and VOILA,
 you'll have a virus like application. 
 
 Even if the project is finished. I will work later in the application (minus the background service part) in order to have a functionnal
